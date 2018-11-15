@@ -30,8 +30,6 @@ public class UserRestService implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
-
-
     @Override
     public UserDto getByEmail(String email) {
         return null;
