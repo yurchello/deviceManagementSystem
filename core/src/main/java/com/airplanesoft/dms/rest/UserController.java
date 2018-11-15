@@ -7,6 +7,9 @@ import com.airplanesoft.dms.service.JobPositionService;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.util.ToDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import org.springframework.data.domain.Pageable;
 
 
@@ -32,8 +39,22 @@ public class UserController {
 
     @GetMapping(path = "")
     public List<UserDto> getAll(UserDto userDto, Pageable pageable){
-        return userService.findAll().stream().map(ToDTO::fromUser).collect(Collectors.toList());
+        Page<User> page = userService.findAll(pageable);
+        return page.getContent().stream()
+                .map(ToDTO::fromUser)
+                .collect(Collectors.toList());
     }
+
+    @GetMapping(path = "/count")
+    public Long count(){
+        return userService.count();
+    }
+
+    @GetMapping(path = "/{id}")
+    public UserDto getUser(@PathVariable Integer id){
+        return ToDTO.fromUser(userService.getById(id));
+    }
+
 
     @GetMapping(path = "/email/{email}")
     public List<User> getUser(@PathVariable String email){
@@ -56,6 +77,5 @@ public class UserController {
 
         userService.save(user);
     }
-
 
 }

@@ -30,6 +30,12 @@ public class UserRestService implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
+
+    @Override
+    public UserDto getById(Integer id) {
+        return restTemplate.exchange(USERS + DELIM + id, HttpMethod.GET, getJsonEntity(), UserDto.class).getBody();
+    }
+
     @Override
     public UserDto getByEmail(String email) {
         return null;
@@ -37,7 +43,7 @@ public class UserRestService implements UserService {
 
     @Override
     public long count() {
-        return 0;
+        return restTemplate.exchange(USERS + COUNT, HttpMethod.GET, getJsonEntity(), Long.class).getBody();
     }
 
     @Override

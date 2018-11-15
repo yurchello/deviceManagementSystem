@@ -3,6 +3,8 @@ package com.airplanesoft.dms.ui;
 
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.service.impl.UserRestService;
+import com.airplanesoft.dms.ui.view.AboutView;
+import com.airplanesoft.dms.ui.view.ContactsView;
 import com.airplanesoft.dms.ui.view.UsersView;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Page;
@@ -24,7 +26,7 @@ import java.util.Optional;
 
 //@SpringView(name="")
 @Theme("valo")
-@SpringUI(path = "/admin")
+@SpringUI(path = "")
 public class AdminUI extends UI {
 
     private static Notification notification;
@@ -71,10 +73,11 @@ public class AdminUI extends UI {
         Button logoutButton = configureLogoutButton();
         HorizontalLayout header = new HorizontalLayout();
         header.setWidth("100%");
-        header.addComponents(logo, menuBar, logoutButton);
+        header.addComponents(logo, menuBar);
+//        header.addComponents(logo, menuBar, logoutButton);
         header.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
         header.setComponentAlignment(menuBar, Alignment.MIDDLE_CENTER);
-        header.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
+//        header.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
         header.setExpandRatio(logo, 1);
         header.setExpandRatio(menuBar, 11);
 
@@ -89,24 +92,24 @@ public class AdminUI extends UI {
 
 
         springNavigator.init(this, main);
+        springNavigator.addView("", UsersView.class);
+
     }
 
     private MenuBar getMenuBar() {
         MenuBar menuBar = new MenuBar();
         menuBar.setWidth("100%");
 
-        MenuBar.MenuItem users = menuBar.addItem("Users", new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem event) {
-                AdminUI.this.getUI().getNavigator().navigateTo(UsersView.VIEW_NAME);
-            }
-        });
-        //MenuBar.MenuItem settings = menuBar.addItem("Settings", null);
+        MenuBar.MenuItem users = menuBar.addItem("Users", (MenuBar.Command) event -> AdminUI.this.getUI().getNavigator().navigateTo(UsersView.VIEW_NAME));
+
+        MenuBar.MenuItem about = menuBar.addItem("About",  (MenuBar.Command) event -> AdminUI.this.getUI().getNavigator().navigateTo(AboutView.VIEW_NAME));
         //settings.addItem("Certificate", event -> getUI().getNavigator().navigateTo(AdminSettingsView.VIEW_NAME));
 
-       // MenuBar.MenuItem archive = menuBar.addItem("Archive", event -> getUI().getNavigator().navigateTo(ArchiveView.VIEW_NAME));
+        MenuBar.MenuItem contacts = menuBar.addItem("Contacts",  (MenuBar.Command) event -> AdminUI.this.getUI().getNavigator().navigateTo(ContactsView.VIEW_NAME));
 
         viewByRootItem.put(UsersView.class, users);
+        viewByRootItem.put(AboutView.class, about);
+        viewByRootItem.put(ContactsView.class, contacts);
 //        viewByRootItem.put(AdminSettingsView.class, settings);
 //        viewByRootItem.put(ArchiveView.class, archive);
 
@@ -132,7 +135,7 @@ public class AdminUI extends UI {
         loginButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                List<UserDto> userDtos = service.findAll(new PageRequest(1, 23));
+                List<UserDto> userDtos = service.findAll(new PageRequest(0, 5));
                 System.out.println();
             }
         });

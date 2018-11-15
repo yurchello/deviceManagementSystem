@@ -4,6 +4,8 @@ import com.airplanesoft.dms.entity.User;
 import com.airplanesoft.dms.repository.UserRepository;
 import com.airplanesoft.dms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
     public void save(User user) {
         userRepository.save(user);
     }
@@ -27,5 +34,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public long count(){
         return userRepository.count();
+    }
+
+    @Override
+    public User getById(Integer id) {
+        return userRepository.getOne(id);
     }
 }

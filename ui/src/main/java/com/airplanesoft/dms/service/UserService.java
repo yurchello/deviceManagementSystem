@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public interface UserService extends Service{
+    UserDto getById(Integer id);
     UserDto getByEmail(String email);
     long count();
     long count(UserDto criteria);
