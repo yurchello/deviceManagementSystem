@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: core-dms-service
+
+  jpa:
+    databasePlatform: org.hibernate.dialect.H2Dialect
+    showSql: true
+    hibernate:
+      ddlAuto: create
+    properties:
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      hibernate.format_sql: false
+      hibernate.useSqlComments: false
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:dms
+    username: root
+    password:
+  h2:
+    console:
+      enabled: true
+    path: /h2-console
+
+server:
+  port: 8307
+  display-name: DMS
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){magenta} %highlight(%-5level) %clr(%-55logger{25}){yellow} - %msg%n"
+  level:
+    org.springframework: INFO

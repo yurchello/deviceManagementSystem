@@ -1,0 +1,60 @@
+insert into job_positions (name, created, modified) values('developer','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into job_positions (name, created, modified) values('pm','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into job_positions (name, created, modified) values('qa','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into job_positions (name, created, modified) values('automation_qa','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into job_positions (name, created, modified) values('lead_developer','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+
+insert into users (first_name, last_name, email, created, modified, ) values('Lionel','Messi','Lionel@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Mike','Fisher','Fisher@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Jhon','Miels','Miels@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Nijel','Worker','Worker@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Ann','Stanly','Stanly@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Marry','Mezentseva','Mezentseva@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Peter','Gabriel','Gabriel@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Shian','Conor','Conor@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Martin','Fauler','Fauler@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('David','Ros','Ros@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+
+insert into users (first_name, last_name, email, created, modified) values('Lionel2','Messi','Lionel2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Mike2','Fisher','Fisher2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Jhon2','Miels','Miels2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Nijel2','Worker','Worker2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Ann2','Stanly','Stanly2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Marry2','Mezentseva','Mezentseva2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Peter2','Gabriel','Gabriel2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Shian2','Conor','Conor2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('Martin2','Fauler','Fauler2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into users (first_name, last_name, email, created, modified) values('David2','Ros','Ros2@.eee.com','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+
+insert into user_job_positions (user_id, job_position_id) values(1,1);
+insert into user_job_positions (user_id, job_position_id) values(1,5);
+insert into user_job_positions (user_id, job_position_id) values(2,1);
+insert into user_job_positions (user_id, job_position_id) values(2,5);
+insert into user_job_positions (user_id, job_position_id) values(3,1);
+insert into user_job_positions (user_id, job_position_id) values(3,5);
+insert into user_job_positions (user_id, job_position_id) values(4,1);
+insert into user_job_positions (user_id, job_position_id) values(5,1);
+insert into user_job_positions (user_id, job_position_id) values(6,1);
+insert into user_job_positions (user_id, job_position_id) values(7,1);
+insert into user_job_positions (user_id, job_position_id) values(8,2);
+insert into user_job_positions (user_id, job_position_id) values(9,2);
+insert into user_job_positions (user_id, job_position_id) values(10,2);
+insert into user_job_positions (user_id, job_position_id) values(11,2);
+insert into user_job_positions (user_id, job_position_id) values(12,3);
+insert into user_job_positions (user_id, job_position_id) values(13,3);
+insert into user_job_positions (user_id, job_position_id) values(14,3);
+insert into user_job_positions (user_id, job_position_id) values(15,3);
+insert into user_job_positions (user_id, job_position_id) values(16,3);
+insert into user_job_positions (user_id, job_position_id) values(17,4);
+insert into user_job_positions (user_id, job_position_id) values(18,4);
+insert into user_job_positions (user_id, job_position_id) values(19,4);
+insert into user_job_positions (user_id, job_position_id) values(20,4);
+
+insert into device_platforms (name, created, modified) values('android','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into device_platforms (name, created, modified) values('apple','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into device_platforms (name, created, modified) values('windows','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+insert into device_platforms (name, created, modified) values('blackberry','2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+
+--insert into devices (device_state, device_platform, created, modified) values('INACTIVE', 1,'2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+--insert into devices (device_state, device_platform, created, modified) values('INACTIVE', 2,'2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
+--insert into devices (device_state, device_platform, created, modified) values('INACTIVE', 3,'2018-11-09T16:09:00.991+02:00','2018-11-09T16:09:00.992+02:00');
