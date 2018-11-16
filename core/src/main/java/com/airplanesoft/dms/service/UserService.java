@@ -1,10 +1,12 @@
 package com.airplanesoft.dms.service;
 
+import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     List<User> findAll();
@@ -16,4 +18,6 @@ public interface UserService {
     long count();
 
     User getById(Integer id);
+
+    Set<Device> getDevicesByUserId(Integer userId);
 }

@@ -1,7 +1,8 @@
 package com.airplanesoft.dms.entity;
 
+import com.airplanesoft.dms.dto.DeviceState;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 

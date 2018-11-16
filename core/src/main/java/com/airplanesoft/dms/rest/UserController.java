@@ -1,5 +1,6 @@
 package com.airplanesoft.dms.rest;
 
+import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.entity.JobPosition;
 import com.airplanesoft.dms.entity.User;
@@ -20,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -54,6 +56,14 @@ public class UserController {
     public UserDto getUser(@PathVariable Integer id){
         return ToDTO.fromUser(userService.getById(id));
     }
+
+    @GetMapping(path = "/{id}/devices")
+    public Set<DeviceDto> getUserDevices(@PathVariable Integer id){
+        return userService.getById(id).getDevices().stream().map(ToDTO::fromDevice).collect(Collectors.toSet());
+    }
+
+
+
 
 
     @GetMapping(path = "/email/{email}")

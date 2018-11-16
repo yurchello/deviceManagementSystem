@@ -1,5 +1,6 @@
 package com.airplanesoft.dms.service.impl;
 
+import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.utils.URLConstants;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -62,6 +64,17 @@ public class UserRestService implements UserService {
     public List<UserDto> findAll(UserDto criteria, Pageable pageable) {
         return null;
     }
+
+    @Override
+    public Set<DeviceDto> getDevicesByUserId(Integer userId, Pageable pageable) {
+        String uriString = buildUriString( USERS + "/" + userId + "/" + DEVICES, pageable);
+
+        //restTemplate.exchange(USERS + "/" + userId + DEVICES, HttpMethod.GET, getJsonEntity(), Set.class).getBody();
+        return makeGetRequest(uriString, new ParameterizedTypeReference<Set<DeviceDto>>() {}).getBody();
+    }
+
+
+
 
     private String buildUriString(String path, UserDto criteria) {
         return UriComponentsBuilder.fromPath(path)

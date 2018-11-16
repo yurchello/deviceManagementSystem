@@ -1,5 +1,6 @@
 package com.airplanesoft.dms.service.impl;
 
+import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.User;
 import com.airplanesoft.dms.repository.UserRepository;
 import com.airplanesoft.dms.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,4 +42,12 @@ public class UserServiceImpl implements UserService {
     public User getById(Integer id) {
         return userRepository.getOne(id);
     }
+
+    @Override
+    public Set<Device> getDevicesByUserId(Integer userId) {
+        User user = userRepository.getOne(userId);
+        return user.getDevices();
+    }
+
+
 }

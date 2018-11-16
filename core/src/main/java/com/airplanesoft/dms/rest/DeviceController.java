@@ -2,7 +2,7 @@ package com.airplanesoft.dms.rest;
 
 import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.DevicePlatform;
-import com.airplanesoft.dms.entity.DeviceState;
+import com.airplanesoft.dms.dto.DeviceState;
 import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +23,9 @@ public class DeviceController {
 
     @Autowired
     private DeviceService deviceService;
+
+
+
 
 
 
