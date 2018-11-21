@@ -5,7 +5,6 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-
 import javax.annotation.PostConstruct;
 
 @SpringView(name = AboutView.VIEW_NAME, ui = AdminUI.class)

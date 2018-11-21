@@ -28,10 +28,8 @@ import static com.airplanesoft.dms.utils.URLConstants.*;
 @Service
 public class UserRestService implements UserService {
 
-
     @Autowired
     private RestTemplate restTemplate;
-
 
     @Override
     public UserDto getById(Integer id) {
@@ -55,8 +53,7 @@ public class UserRestService implements UserService {
 
     @Override
     public List<UserDto> findAll(Pageable pageable) {
-        String uriString = buildUriString( USERS, pageable);
-        //restTemplate.exchange(ROOT_BACKEND_SERVER_API + USERS, HttpMethod.GET, getJsonEntity(), Void.class);
+        String uriString = buildUriString(USERS, pageable);
         return makeGetRequest(uriString, new ParameterizedTypeReference<List<UserDto>>() {}).getBody();
     }
 
@@ -67,13 +64,18 @@ public class UserRestService implements UserService {
 
     @Override
     public Set<DeviceDto> getDevicesByUserId(Integer userId, Pageable pageable) {
-        String uriString = buildUriString( USERS + "/" + userId + "/" + DEVICES, pageable);
-
-        //restTemplate.exchange(USERS + "/" + userId + DEVICES, HttpMethod.GET, getJsonEntity(), Set.class).getBody();
+        String uriString = buildUriString( USERS + DELIM + userId + DEVICES, pageable);
         return makeGetRequest(uriString, new ParameterizedTypeReference<Set<DeviceDto>>() {}).getBody();
     }
 
+    public void saveDevice(UserDto userDto, DeviceDto deviceDto){
+        restTemplate.put( USERS + DELIM + userDto.getId() +  DEVICES + DELIM, deviceDto, Void.class);
+    }
 
+    @Override
+    public long countDevices(Integer userId) {
+        return restTemplate.exchange(USERS + DELIM + userId + DEVICES + COUNT, HttpMethod.GET, getJsonEntity(), Long.class).getBody();
+    }
 
 
     private String buildUriString(String path, UserDto criteria) {

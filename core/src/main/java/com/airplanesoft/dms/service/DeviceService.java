@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface DeviceService {
     List<Device> findAll();
-    void save(Device device);
+    Device save(Device device);
+    Device getById(Integer id);
 }

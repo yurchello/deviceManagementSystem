@@ -20,9 +20,13 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void save(Device device) {
-        deviceRepository.save(device);
+    public Device save(Device device) {
+        return deviceRepository.save(device);
     }
 
+    @Override
+    public Device getById(Integer id) {
+        return deviceRepository.getOne(id);
+    }
 
 }

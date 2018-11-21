@@ -12,6 +12,13 @@ public class DevicePlatform extends AbstractEntity<Integer>{
     @Column(nullable = false, unique = true)
     private String name;
 
+    public DevicePlatform(String name) {
+        this.name = name;
+    }
+
+    public DevicePlatform() {
+    }
+
     public String getName() {
         return name;
     }

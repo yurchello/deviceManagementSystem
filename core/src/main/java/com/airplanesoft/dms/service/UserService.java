@@ -4,7 +4,6 @@ import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 import java.util.Set;
 
@@ -20,4 +19,6 @@ public interface UserService {
     User getById(Integer id);
 
     Set<Device> getDevicesByUserId(Integer userId);
+
+    User addDevice(Integer userId, Device device);
 }

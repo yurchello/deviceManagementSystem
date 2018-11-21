@@ -9,12 +9,8 @@ import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.DeviceService;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.ui.AdminUI;
-import com.kbdunn.vaadin.addons.fontawesome.FontAwesome;
-import com.vaadin.data.provider.QuerySortOrder;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
@@ -26,16 +22,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import static com.airplanesoft.dms.utils.URLConstants.DELIM;
 
 @SpringView(name = DevicesView.VIEW_NAME, ui = AdminUI.class)
-public class DevicesView extends VerticalLayout implements BaseView{
-    static final String VIEW_NAME = "devices";
+public class DevicesView extends VerticalLayout implements BaseView {
+    static final String VIEW_NAME = "user-devices";
 
     @Autowired
     private UserService userService;
@@ -43,42 +39,15 @@ public class DevicesView extends VerticalLayout implements BaseView{
     @Autowired
     private DevicePlatformService devicePlatformService;
 
-//    @Autowired
-    private DeviceService deviceService;
-
     private Grid<DeviceDto> deviceGrid;
     private Label noDevicesLabel;
 
-Window subWindow;
-//    @PostConstruct
-//    void init() {
-//        deviceGrid = new Grid<>();
-//        deviceGrid.addColumn(DeviceDto::getId).setId("deviceId").setCaption("Device ID");
-//        deviceGrid.addColumn(DeviceDto::getDevicePlatform).setId("devicePlatform").setCaption("Device Platform");
-//        deviceGrid.addColumn(DeviceDto::getDeviceState).setId("deviceState").setCaption("Device State");
-//
-//        deviceGrid.addItemClickListener((ItemClickListener<DeviceDto>) event -> {
-//            SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
-//            navigator.navigateTo(UserView.VIEW_NAME + "/" + event.getItem().getId());
-//        });
-//
-//        addComponents(deviceGrid);
-//
-//        deviceGrid.setWidth(100.f, Unit.PERCENTAGE);
-//        setExpandRatio(deviceGrid, 1.f);
-//
-//        noDevicesLabel = new Label("Looks like there are no devices yet.");
-//        noDevicesLabel.setStyleName(ValoTheme.LABEL_H2);
-//        noDevicesLabel.setVisible(false);
-//
-//        addComponent(noDevicesLabel);
-//        setComponentAlignment(noDevicesLabel, Alignment.MIDDLE_CENTER);
-//        //listDevices();
-//    }
+    Window subWindow;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        String userId = event.getParameters().split("/")[0];
+
+        String userId = event.getParameters().split(DELIM)[0];
         removeAllComponents();
 
         Button addDeviceBtn = new Button("Add device");
@@ -89,44 +58,41 @@ Window subWindow;
                 addComponent(new Label("User: " + userDto.getFirstName() + " " + userDto.getLastName()));
                 addComponent(addDeviceBtn);
             }
+
+            addDeviceBtn.addClickListener(action -> {
+                subWindow = alert("Add Device", newDeviceContent(userDto));
+                UI.getCurrent().addWindow(subWindow);
+            });
+
+            deviceGrid = new Grid<>();
+            deviceGrid.addColumn(DeviceDto::getId).setId("deviceId").setCaption("Device ID");
+            deviceGrid.addColumn(DeviceDto::getDevicePlatform).setId("devicePlatform").setCaption("Device Platform");
+            deviceGrid.addColumn(DeviceDto::getDeviceState).setId("deviceState").setCaption("Device State");
+
+            deviceGrid.addItemClickListener((ItemClickListener<DeviceDto>) e -> {
+                SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
+                navigator.navigateTo(DeviceView.VIEW_NAME + DELIM + e.getItem().getId() + DELIM + userId);
+            });
+
+            addComponents(deviceGrid);
+
+            deviceGrid.setWidth(100.f, Unit.PERCENTAGE);
+            setExpandRatio(deviceGrid, 1.f);
+
+            noDevicesLabel = new Label("Looks like there are no devices yet.");
+            noDevicesLabel.setStyleName(ValoTheme.LABEL_H2);
+            noDevicesLabel.setVisible(false);
+
+            addComponent(noDevicesLabel);
+            setComponentAlignment(noDevicesLabel, Alignment.MIDDLE_CENTER);
+            listDevices(Integer.parseInt(userId));
+
         } else {
             addComponent(new Label("User not found!: " + userId));
         }
-
-        addDeviceBtn.addClickListener(action -> {
-            Navigator navigator = getUI().getNavigator();
-            //navigator.navigateTo(DevicesView.VIEW_NAME + "/" + userId + "/");
-            DeviceDto deviceDto;
-            subWindow = alert("Add Device", newDeviceContent());
-
-            UI.getCurrent().addWindow(subWindow);
-        });
-
-        deviceGrid = new Grid<>();
-        deviceGrid.addColumn(DeviceDto::getId).setId("deviceId").setCaption("Device ID");
-        deviceGrid.addColumn(DeviceDto::getDevicePlatform).setId("devicePlatform").setCaption("Device Platform");
-        deviceGrid.addColumn(DeviceDto::getDeviceState).setId("deviceState").setCaption("Device State");
-
-        deviceGrid.addItemClickListener((ItemClickListener<DeviceDto>) e -> {
-            SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
-            navigator.navigateTo(UserView.VIEW_NAME + "/" + e.getItem().getId());
-        });
-
-        addComponents(deviceGrid);
-
-        deviceGrid.setWidth(100.f, Unit.PERCENTAGE);
-        setExpandRatio(deviceGrid, 1.f);
-
-        noDevicesLabel = new Label("Looks like there are no devices yet.");
-        noDevicesLabel.setStyleName(ValoTheme.LABEL_H2);
-        noDevicesLabel.setVisible(false);
-
-        addComponent(noDevicesLabel);
-        setComponentAlignment(noDevicesLabel, Alignment.MIDDLE_CENTER);
-        listDevices(Integer.parseInt(userId));
     }
 
-    private VerticalLayout newDeviceContent(){
+    private VerticalLayout newDeviceContent(UserDto userDto) {
 
         DeviceDto deviceDto = new DeviceDto();
         List<DevicePlatformDTO> devicePlatformDTOS = devicePlatformService.getAll();
@@ -157,8 +123,10 @@ Window subWindow;
         button.addClickListener(action -> {
             System.out.println(deviceDto);
             //save dto
-            deviceService.save(deviceDto);
+            userService.saveDevice(userDto, deviceDto);
             subWindow.close();
+            SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
+            navigator.navigateTo(DevicesView.VIEW_NAME + DELIM + userDto.getId() + DELIM);
         });
 
 
@@ -176,10 +144,10 @@ Window subWindow;
         }
         noDevicesLabel.setVisible(false);
         deviceGrid.setVisible(true);
-        deviceGrid.setDataProvider(setUpFetchItems(userId), () -> (int) deviceService.count());
+        deviceGrid.setDataProvider(setUpFetchItems(userId), () -> (int) userService.countDevices(userId));
     }
 
-    Window alert(String title, Component content){
+    Window alert(String title, Component content) {
         Window subWindow = new Window(title);
         subWindow.setHeight("400px");
         subWindow.setWidth("600px");
@@ -192,28 +160,21 @@ Window subWindow;
     }
 
     private Grid.FetchItemsCallback<DeviceDto> setUpFetchItems(Integer userId) {
-        return new Grid.FetchItemsCallback<DeviceDto>() {
-            @Override
-            public Stream<DeviceDto> fetchItems(List<QuerySortOrder> sortOrder, int offset, int limit) {
+        return (Grid.FetchItemsCallback<DeviceDto>) (sortOrder, offset, limit) -> {
+            List<Sort.Order> orders = sortOrder.stream()
+                    .map(order -> new Sort.Order(order.getDirection() == SortDirection.ASCENDING
+                            ? Sort.Direction.ASC
+                            : Sort.Direction.DESC, order.getSorted()))
+                    .collect(Collectors.toList());
 
+            Sort sort = orders.isEmpty() ? null : new Sort(orders);
 
-                List<Sort.Order> orders = sortOrder.stream()
-                        .map(order -> new Sort.Order(order.getDirection() == SortDirection.ASCENDING
-                                ? Sort.Direction.ASC
-                                : Sort.Direction.DESC, order.getSorted()))
-                        .collect(Collectors.toList());
-
-                Sort sort = orders.isEmpty() ? null : new Sort(orders);
-
-                Pageable pageable = new PageRequest(offset / limit, limit, sort);
-                Set<DeviceDto> set = userService.getDevicesByUserId(userId, pageable);
-                List<DeviceDto> deviceDtoList = new ArrayList<>(set);
-                return deviceDtoList.subList(offset % limit, deviceDtoList.size()).stream();
-            }
+            Pageable pageable = new PageRequest(offset / limit, limit, sort);
+            Set<DeviceDto> set = userService.getDevicesByUserId(userId, pageable);
+            List<DeviceDto> deviceDtoList = new ArrayList<>(set);
+            return deviceDtoList.subList(offset % limit, deviceDtoList.size()).stream();
         };
     }
-
-
 
 
 }

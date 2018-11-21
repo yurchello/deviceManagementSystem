@@ -1,7 +1,6 @@
 package com.airplanesoft.dms.dto;
 
 
-
 public class DeviceDto {
 
     private Integer id;
@@ -9,8 +8,6 @@ public class DeviceDto {
     private String devicePlatform;
 
     private String deviceState;
-
-
 
     public DeviceDto(Integer id, String devicePlatform, String deviceState) {
         this.id = id;
@@ -44,5 +41,14 @@ public class DeviceDto {
 
     public void setDeviceState(String deviceState) {
         this.deviceState = deviceState;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceDto{" +
+                "id=" + id +
+                ", devicePlatform='" + devicePlatform + '\'' +
+                ", deviceState='" + deviceState + '\'' +
+                '}';
     }
 }

@@ -1,21 +1,17 @@
 package com.airplanesoft.dms.rest;
 
-import com.airplanesoft.dms.entity.Device;
-import com.airplanesoft.dms.entity.DevicePlatform;
-import com.airplanesoft.dms.dto.DeviceState;
+import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.DeviceService;
+import com.airplanesoft.dms.util.ToDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
 @RestController
-@RequestMapping("/devices")
+@RequestMapping("api/devices")
 public class DeviceController {
 
     @Autowired
@@ -24,29 +20,8 @@ public class DeviceController {
     @Autowired
     private DeviceService deviceService;
 
-
-
-
-
-
-    @GetMapping(path = "/test")
-    void test(){
-        Device device = new Device();
-
-        List<DevicePlatform> platformList = devicePlatformService.findAll();
-        Optional<DevicePlatform> devicePlatformOptional = devicePlatformService.findByName("android");
-
-        device.setDevicePlatform(devicePlatformOptional.get());
-        device.setDeviceState(DeviceState.INACTIVE);
-        device.setCreated(ZonedDateTime.now());
-        device.setModified(ZonedDateTime.now());
-
-        List<Device> devices1 = deviceService.findAll();
-
-        deviceService.save(device);
-
-         List<Device> devices2 = deviceService.findAll();
-
-        System.out.println();
+    @GetMapping(path = "/{id}")
+    public DeviceDto getDevice(@PathVariable Integer id) {
+        return ToDTO.fromDevice(deviceService.getById(id));
     }
 }

@@ -2,6 +2,7 @@ package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.User;
+import com.airplanesoft.dms.repository.DeviceRepository;
 import com.airplanesoft.dms.repository.UserRepository;
 import com.airplanesoft.dms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    DeviceRepository deviceRepository;
 
     @Override
     public List<User> findAll() {
@@ -49,5 +52,12 @@ public class UserServiceImpl implements UserService {
         return user.getDevices();
     }
 
+    @Override
+    public User addDevice(Integer userId, Device device){
+        Device savedDevice = deviceRepository.save(device);
+        User user = userRepository.getOne(userId);
+        user.getDevices().add(savedDevice);
+        return userRepository.save(user);
+    }
 
 }

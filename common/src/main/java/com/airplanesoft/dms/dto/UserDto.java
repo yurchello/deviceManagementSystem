@@ -1,7 +1,6 @@
 package com.airplanesoft.dms.dto;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class UserDto {
 
@@ -65,5 +64,16 @@ public class UserDto {
 
     public void setJobPositions(Set<String> jobPositions) {
         this.jobPositions = jobPositions;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", jobPositions=" + jobPositions +
+                '}';
     }
 }

@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class AbstractEntity <K extends Serializable> implements Serializable{
+public class AbstractEntity<K extends Serializable> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private K id;

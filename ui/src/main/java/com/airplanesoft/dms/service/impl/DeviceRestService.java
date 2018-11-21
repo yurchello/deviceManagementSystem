@@ -2,17 +2,16 @@ package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.service.DeviceService;
-import com.airplanesoft.dms.utils.URLConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.List;
 import java.util.Set;
-
 import static com.airplanesoft.dms.utils.URLConstants.*;
 
+@Service
 public class DeviceRestService implements DeviceService {
 
     @Autowired
@@ -20,7 +19,7 @@ public class DeviceRestService implements DeviceService {
 
     @Override
     public DeviceDto getById(Integer id) {
-        return null;
+        return restTemplate.exchange(DEVICES + DELIM + id, HttpMethod.GET, getJsonEntity(), DeviceDto.class).getBody();
     }
 
     @Override
@@ -50,6 +49,6 @@ public class DeviceRestService implements DeviceService {
 
     @Override
     public void save(DeviceDto deviceDto) {
-        restTemplate.put( DEVICES + "/", deviceDto, Void.class);
+        restTemplate.put( DEVICES + DELIM, deviceDto, Void.class);
     }
 }
