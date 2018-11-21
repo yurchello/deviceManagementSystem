@@ -12,6 +12,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,8 @@ public class UsersView extends VerticalLayout implements BaseView {
 
     public static final String VIEW_NAME = "users-grid";
 
+    private final Log logger = LogFactory.getLog(getClass());
+
     @Autowired
     private UserService userService;
 
@@ -36,12 +40,16 @@ public class UsersView extends VerticalLayout implements BaseView {
 
     @PostConstruct
     void init() {
+
+        logger.info("Init " + VIEW_NAME);
+
         userGrid = new Grid<>();
         userGrid.addColumn(UserDto::getFirstName).setId("userName").setCaption("User Name");
         userGrid.addColumn(UserDto::getLastName).setId("lastName").setCaption("Last Name");
         userGrid.addColumn(userDto -> userDto.getJobPositions().toString()).setId("jobPositions").setCaption("Job Positions");
 
         userGrid.addItemClickListener((ItemClickListener<UserDto>) event -> {
+            logger.info("UserGrid item clicked.");
             SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
             navigator.navigateTo(UserView.VIEW_NAME + DELIM + event.getItem().getId());
         });
@@ -61,6 +69,7 @@ public class UsersView extends VerticalLayout implements BaseView {
     }
 
     private void listUsers() {
+        logger.info("List users.");
         long userCount = userService.count();
         if (userCount == 0) {
             userGrid.setVisible(false);

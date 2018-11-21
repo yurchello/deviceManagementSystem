@@ -1,6 +1,6 @@
 spring:
   application:
-    name: core-dms-service
+    name: core-dmc-service
 
   jpa:
     databasePlatform: org.hibernate.dialect.H2Dialect
@@ -23,10 +23,11 @@ spring:
 
 server:
   port: 8307
-  display-name: DMS
+  display-name: DMC
 
 logging:
   pattern:
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){magenta} %highlight(%-5level) %clr(%-55logger{25}){yellow} - %msg%n"
   level:
     org.springframework: INFO
+  file: be_application.log

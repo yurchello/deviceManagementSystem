@@ -2,6 +2,8 @@ package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.service.DeviceService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -13,12 +15,14 @@ import static com.airplanesoft.dms.utils.URLConstants.*;
 
 @Service
 public class DeviceRestService implements DeviceService {
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired
     private RestTemplate restTemplate;
 
     @Override
     public DeviceDto getById(Integer id) {
+        logger.info("Get device id=" + id);
         return restTemplate.exchange(DEVICES + DELIM + id, HttpMethod.GET, getJsonEntity(), DeviceDto.class).getBody();
     }
 
@@ -49,6 +53,7 @@ public class DeviceRestService implements DeviceService {
 
     @Override
     public void save(DeviceDto deviceDto) {
+        logger.info("Save device: " + deviceDto);
         restTemplate.put( DEVICES + DELIM, deviceDto, Void.class);
     }
 }

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ui-dmc-service
+
+server:
+  port: 8080
+  display-name: UI
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){magenta} %highlight(%-5level) %clr(%-55logger{25}){yellow} - %msg%n"
+  level:
+    org.springframework: INFO
+  file: fe_application.log

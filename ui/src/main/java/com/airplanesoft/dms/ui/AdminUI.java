@@ -11,6 +11,8 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.spring.navigator.SpringNavigator;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -24,6 +26,7 @@ public class AdminUI extends UI {
     private static Notification notification;
     private Map<Class<? extends View>, MenuBar.MenuItem> viewByRootItem = new HashMap<>();
     private final SpringNavigator springNavigator;
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired
     public AdminUI(SpringNavigator springNavigator) {
@@ -32,6 +35,7 @@ public class AdminUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
+        logger.info("Init AdminUI.");
         if (notification != null) {
             notification.show(Page.getCurrent());
             notification = null;

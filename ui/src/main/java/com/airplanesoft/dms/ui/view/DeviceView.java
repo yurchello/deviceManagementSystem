@@ -13,6 +13,8 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.airplanesoft.dms.utils.URLConstants.DELIM;
@@ -20,6 +22,8 @@ import static com.airplanesoft.dms.utils.URLConstants.DELIM;
 @SpringView(name = DeviceView.VIEW_NAME, ui = AdminUI.class)
 public class DeviceView extends VerticalLayout implements BaseView {
     static final String VIEW_NAME = "devices";
+
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired
     private DeviceService deviceService;
@@ -31,10 +35,14 @@ public class DeviceView extends VerticalLayout implements BaseView {
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         String deviceId = event.getParameters().split(DELIM)[0];
         String userId = event.getParameters().split(DELIM)[1];
+
+        logger.info("Init " + VIEW_NAME + DELIM + deviceId + DELIM + userId);
+
         removeAllComponents();
 
         if (NumberUtils.isParsable(deviceId)) {
             DeviceDto deviceDto = deviceService.getById(Integer.valueOf(deviceId));
+            logger.info(deviceDto);
             if (deviceDto != null) {
                 addComponent(deviceLayout(deviceDto, Integer.valueOf(userId)));
             }

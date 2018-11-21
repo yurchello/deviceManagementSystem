@@ -4,13 +4,14 @@ import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.DevicePlatform;
-import com.airplanesoft.dms.entity.JobPosition;
 import com.airplanesoft.dms.entity.User;
 import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.JobPositionService;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.util.FromDTO;
 import com.airplanesoft.dms.util.ToDTO;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("api/users")
 public class UserController {
 
+    private final Log logger = LogFactory.getLog(getClass());
+
     @Autowired
     UserService userService;
 
@@ -39,6 +42,7 @@ public class UserController {
 
     @GetMapping(path = "")
     public List<UserDto> getAll(UserDto userDto, Pageable pageable) {
+        logger.info("Get users by pages: page size=" + pageable.getPageSize() + " page number=" + pageable.getPageNumber());
         Page<User> page = userService.findAll(pageable);
         return page.getContent().stream()
                 .map(ToDTO::fromUser)
@@ -62,7 +66,6 @@ public class UserController {
 
     @PutMapping("/{id}/devices")
     public HttpStatus saveDevice(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
-        System.out.println();
         Device device = FromDTO.fromDeviceDTO(deviceDto);
         device.setCreated(ZonedDateTime.now());
         device.setModified(ZonedDateTime.now());

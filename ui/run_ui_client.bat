@@ -1,0 +1,1 @@
+java -jar target/ui-1.0-SNAPSHOT-spring-boot.jar

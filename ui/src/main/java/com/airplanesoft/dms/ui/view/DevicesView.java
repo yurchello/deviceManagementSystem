@@ -1,12 +1,10 @@
 package com.airplanesoft.dms.ui.view;
 
-
 import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.DevicePlatformDTO;
 import com.airplanesoft.dms.dto.DeviceState;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.service.DevicePlatformService;
-import com.airplanesoft.dms.service.DeviceService;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.ui.AdminUI;
 import com.vaadin.navigator.ViewChangeListener;
@@ -17,6 +15,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +33,8 @@ import static com.airplanesoft.dms.utils.URLConstants.DELIM;
 public class DevicesView extends VerticalLayout implements BaseView {
     static final String VIEW_NAME = "user-devices";
 
+    private final Log logger = LogFactory.getLog(getClass());
+
     @Autowired
     private UserService userService;
 
@@ -46,8 +48,10 @@ public class DevicesView extends VerticalLayout implements BaseView {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
         String userId = event.getParameters().split(DELIM)[0];
+
+        logger.info("Init " + VIEW_NAME + DELIM + userId);
+
         removeAllComponents();
 
         Button addDeviceBtn = new Button("Add device");
@@ -55,11 +59,13 @@ public class DevicesView extends VerticalLayout implements BaseView {
         if (NumberUtils.isParsable(userId)) {
             UserDto userDto = userService.getById(Integer.valueOf(userId));
             if (userDto != null) {
+                logger.info(userDto);
                 addComponent(new Label("User: " + userDto.getFirstName() + " " + userDto.getLastName()));
                 addComponent(addDeviceBtn);
             }
 
             addDeviceBtn.addClickListener(action -> {
+                logger.info("Add device button clicked.");
                 subWindow = alert("Add Device", newDeviceContent(userDto));
                 UI.getCurrent().addWindow(subWindow);
             });
@@ -70,6 +76,7 @@ public class DevicesView extends VerticalLayout implements BaseView {
             deviceGrid.addColumn(DeviceDto::getDeviceState).setId("deviceState").setCaption("Device State");
 
             deviceGrid.addItemClickListener((ItemClickListener<DeviceDto>) e -> {
+                logger.info("Grid item clicked.");
                 SpringNavigator navigator = (SpringNavigator) getUI().getNavigator();
                 navigator.navigateTo(DeviceView.VIEW_NAME + DELIM + e.getItem().getId() + DELIM + userId);
             });
@@ -121,7 +128,6 @@ public class DevicesView extends VerticalLayout implements BaseView {
         Button button = new Button("Add");
 
         button.addClickListener(action -> {
-            System.out.println(deviceDto);
             //save dto
             userService.saveDevice(userDto, deviceDto);
             subWindow.close();
@@ -136,6 +142,7 @@ public class DevicesView extends VerticalLayout implements BaseView {
     }
 
     private void listDevices(Integer userId) {
+        logger.info("Listing devices.");
         long devicesCount = userService.getDevicesByUserId(userId, new PageRequest(0, Integer.MAX_VALUE)).size();
         if (devicesCount == 0) {
             deviceGrid.setVisible(false);
@@ -147,7 +154,8 @@ public class DevicesView extends VerticalLayout implements BaseView {
         deviceGrid.setDataProvider(setUpFetchItems(userId), () -> (int) userService.countDevices(userId));
     }
 
-    Window alert(String title, Component content) {
+    private Window alert(String title, Component content) {
+        logger.info("Show alert. " + title);
         Window subWindow = new Window(title);
         subWindow.setHeight("400px");
         subWindow.setWidth("600px");

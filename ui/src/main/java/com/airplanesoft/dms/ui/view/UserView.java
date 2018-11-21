@@ -3,7 +3,6 @@ package com.airplanesoft.dms.ui.view;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.ui.AdminUI;
-import com.airplanesoft.dms.utils.URLConstants;
 import com.kbdunn.vaadin.addons.fontawesome.FontAwesome;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -12,6 +11,8 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.airplanesoft.dms.utils.URLConstants.*;
@@ -20,16 +21,20 @@ import static com.airplanesoft.dms.utils.URLConstants.*;
 public class UserView extends VerticalLayout implements BaseView {
     static final String VIEW_NAME = "users";
 
+    private final Log logger = LogFactory.getLog(getClass());
+
     @Autowired
     private UserService userService;
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         String userId = event.getParameters().split(DELIM)[0];
+        logger.info("Init " + VIEW_NAME + DELIM + userId);
         removeAllComponents();
 
         if (NumberUtils.isParsable(userId)) {
             UserDto userDto = userService.getById(Integer.valueOf(userId));
+            logger.info(userDto);
             if (userDto != null) {
                 addComponent(userLayout(userDto));
             }
@@ -46,6 +51,7 @@ public class UserView extends VerticalLayout implements BaseView {
 
         Button devicesButton = new Button("View assigned devices");
         devicesButton.addClickListener(action -> {
+            logger.info("View devices button clicked.");
             Navigator navigator = getUI().getNavigator();
             navigator.navigateTo(DevicesView.VIEW_NAME + DELIM + userDto.getId() + DELIM);
         });
