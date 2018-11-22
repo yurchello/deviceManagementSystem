@@ -18,4 +18,5 @@ public interface DeviceService extends Service{
     List<DeviceDto> findAll(DeviceDto criteria, Pageable pageable);
     Set<DeviceDto> getDevicesByUserId(Integer userId);
     void save(DeviceDto deviceDto);
+    void updateDeviceState(Integer id, String state);
 }

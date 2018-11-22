@@ -9,4 +9,6 @@ public abstract class URLConstants {
     public static String COUNT = DELIM + "count";
     public static String DEVICES = DELIM + "devices";
     public static String DEVICE_PLATFORMS = DELIM + "device-platforms";
+    public static String DEVICE_STATE = DELIM + "state";
+
 }

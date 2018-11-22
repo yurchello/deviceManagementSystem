@@ -5,10 +5,7 @@ import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.DeviceService;
 import com.airplanesoft.dms.util.ToDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/devices")
@@ -23,5 +20,10 @@ public class DeviceController {
     @GetMapping(path = "/{id}")
     public DeviceDto getDevice(@PathVariable Integer id) {
         return ToDTO.fromDevice(deviceService.getById(id));
+    }
+
+    @PutMapping("{id}/state/{name}")
+    public void changeDeviceState(@PathVariable Integer id, @PathVariable String name) {
+        deviceService.updateDeviceState(id, name);
     }
 }

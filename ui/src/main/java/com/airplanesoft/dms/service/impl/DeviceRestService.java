@@ -56,4 +56,10 @@ public class DeviceRestService implements DeviceService {
         logger.info("Save device: " + deviceDto);
         restTemplate.put( DEVICES + DELIM, deviceDto, Void.class);
     }
+
+    @Override
+    public void updateDeviceState(Integer id, String state) {
+        logger.info("Update device state id=: " + id + " state=" + state);
+        restTemplate.put( DEVICES + DELIM + id + DEVICE_STATE + DELIM + state, getJsonEntity(), Void.class);
+    }
 }

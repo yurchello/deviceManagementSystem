@@ -2,6 +2,7 @@ package com.airplanesoft.dms.ui.view;
 
 
 import com.airplanesoft.dms.dto.DeviceDto;
+import com.airplanesoft.dms.dto.DeviceState;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.service.DeviceService;
 import com.airplanesoft.dms.service.UserService;
@@ -58,8 +59,27 @@ public class DeviceView extends VerticalLayout implements BaseView {
         Label deviceDetailsLabel = new Label("<b>Device Details<b>", ContentMode.HTML);
 
         UserDto userDto = userService.getById(userId);
+        Button deactivateBtn = new Button();
 
-        GridLayout deviceGrid = new GridLayout(2, 4);
+        DeviceState deviceState = DeviceState.valueOf(deviceDto.getDeviceState());
+        switch (deviceState){
+            case ACTIVE:
+                deactivateBtn.setCaption("Deactivate Device");
+                deactivateBtn.addClickListener(clickEvent -> {
+                    deviceService.updateDeviceState(deviceDto.getId(), DeviceState.INACTIVE.name());
+                    getUI().getNavigator().navigateTo(VIEW_NAME + DELIM + deviceDto.getId() + DELIM + userId);
+                });
+                break;
+            case INACTIVE:
+                deactivateBtn.setCaption("Activate Device");
+                deactivateBtn.addClickListener(clickEvent -> {
+                    deviceService.updateDeviceState(deviceDto.getId(), DeviceState.ACTIVE.name());
+                    getUI().getNavigator().navigateTo(VIEW_NAME + DELIM + deviceDto.getId() + DELIM + userId);
+                });
+                break;
+        }
+
+        GridLayout deviceGrid = new GridLayout(2, 5);
         deviceGrid.addComponent(new Label("Device ID: "), 0, 0);
         deviceGrid.addComponent(new Label(deviceDto.getId().toString()), 1, 0);
         deviceGrid.addComponent(new Label("Device Platform: "), 0, 1);
@@ -68,6 +88,7 @@ public class DeviceView extends VerticalLayout implements BaseView {
         deviceGrid.addComponent(new Label(deviceDto.getDeviceState()), 1, 2);
         deviceGrid.addComponent(new Label("Assigned User: "), 0, 3);
         deviceGrid.addComponent(new Label(userDto.getFirstName() + " " + userDto.getLastName()), 1, 3);
+        deviceGrid.addComponent(deactivateBtn, 0, 4);
         deviceGrid.setSpacing(true);
 
         Button backButton = new Button("Back", FontAwesome.ARROW_LEFT);
