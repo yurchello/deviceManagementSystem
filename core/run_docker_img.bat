@@ -1,0 +1,1 @@
+docker run -p 8307:8307 docker_spring_boot_be
