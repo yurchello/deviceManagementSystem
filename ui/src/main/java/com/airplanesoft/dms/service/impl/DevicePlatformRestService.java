@@ -1,10 +1,12 @@
 package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.dto.DevicePlatformDTO;
+import com.airplanesoft.dms.http.RestResponse;
 import com.airplanesoft.dms.service.DevicePlatformService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.List;
@@ -24,13 +26,13 @@ public class DevicePlatformRestService implements DevicePlatformService {
     @Override
     public List<DevicePlatformDTO> getAll() {
         logger.info("Get all device platforms.");
-        return restTemplate.exchange(DEVICE_PLATFORMS, HttpMethod.GET, getJsonEntity(), new ParameterizedTypeReference<List<DevicePlatformDTO>>() {}).getBody();
+        return restTemplate.exchange(DEVICE_PLATFORM, HttpMethod.GET, getJsonEntity(), new ParameterizedTypeReference<RestResponse<List<DevicePlatformDTO>>>() {}).getBody().getPayload();
     }
 
     @Override
     public long count() {
         logger.info("Count all device platforms.");
-        return restTemplate.exchange(DEVICE_PLATFORMS + COUNT, HttpMethod.GET, getJsonEntity(), Long.class).getBody();
+        return restTemplate.exchange(DEVICE_PLATFORM + COUNT, HttpMethod.GET, getJsonEntity(), new ParameterizedTypeReference<RestResponse<Long>>(){}).getBody().getPayload();
     }
 
 }

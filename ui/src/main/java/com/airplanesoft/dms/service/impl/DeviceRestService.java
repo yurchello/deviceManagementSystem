@@ -1,10 +1,12 @@
 package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.dto.DeviceDto;
+import com.airplanesoft.dms.http.RestResponse;
 import com.airplanesoft.dms.service.DeviceService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class DeviceRestService implements DeviceService {
     @Override
     public DeviceDto getById(Integer id) {
         logger.info("Get device id=" + id);
-        return restTemplate.exchange(DEVICES + DELIM + id, HttpMethod.GET, getJsonEntity(), DeviceDto.class).getBody();
+        return restTemplate.exchange(DEVICE + DELIM + id, HttpMethod.GET, getJsonEntity(),  new ParameterizedTypeReference<RestResponse<DeviceDto>>(){}).getBody().getPayload();
     }
 
     @Override
@@ -54,12 +56,12 @@ public class DeviceRestService implements DeviceService {
     @Override
     public void save(DeviceDto deviceDto) {
         logger.info("Save device: " + deviceDto);
-        restTemplate.put( DEVICES + DELIM, deviceDto, Void.class);
+        restTemplate.put( DEVICE + DELIM, deviceDto, Void.class);
     }
 
     @Override
     public void updateDeviceState(Integer id, String state) {
         logger.info("Update device state id=: " + id + " state=" + state);
-        restTemplate.put( DEVICES + DELIM + id + DEVICE_STATE + DELIM + state, getJsonEntity(), Void.class);
+        restTemplate.put( DEVICE + DELIM + id + DEVICE_STATE + DELIM + state, getJsonEntity(), Void.class);
     }
 }

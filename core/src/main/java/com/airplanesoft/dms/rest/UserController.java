@@ -5,6 +5,7 @@ import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.DevicePlatform;
 import com.airplanesoft.dms.entity.User;
+import com.airplanesoft.dms.http.RestResponse;
 import com.airplanesoft.dms.service.DevicePlatformService;
 import com.airplanesoft.dms.service.JobPositionService;
 import com.airplanesoft.dms.service.UserService;
@@ -26,7 +27,7 @@ import org.springframework.data.domain.Pageable;
 
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/user")
 public class UserController {
 
     private final Log logger = LogFactory.getLog(getClass());
@@ -41,27 +42,27 @@ public class UserController {
     DevicePlatformService devicePlatformService;
 
     @GetMapping(path = "")
-    public List<UserDto> getAll(UserDto userDto, Pageable pageable) {
+    public RestResponse<List<UserDto>> getAll(UserDto userDto, Pageable pageable) {
         logger.info("Get users by pages: page size=" + pageable.getPageSize() + " page number=" + pageable.getPageNumber());
         Page<User> page = userService.findAll(pageable);
-        return page.getContent().stream()
+        return new RestResponse<>(page.getContent().stream()
                 .map(ToDTO::fromUser)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(path = "/count")
-    public Long count() {
-        return userService.count();
+    public RestResponse<Long> count() {
+        return new RestResponse(userService.count());
     }
 
     @GetMapping(path = "/{id}")
-    public UserDto getUser(@PathVariable Integer id) {
-        return ToDTO.fromUser(userService.getById(id));
+    public RestResponse<UserDto> getUser(@PathVariable Integer id) {
+        return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
     }
 
     @GetMapping(path = "/{id}/devices")
-    public Set<DeviceDto> getUserDevices(@PathVariable Integer id) {
-        return userService.getById(id).getDevices().stream().map(ToDTO::fromDevice).collect(Collectors.toSet());
+    public RestResponse<Set<DeviceDto>> getUserDevices(@PathVariable Integer id) {
+        return new RestResponse<>(userService.getById(id).getDevices().stream().map(ToDTO::fromDevice).collect(Collectors.toSet()));
     }
 
     @PutMapping("/{id}/devices")
@@ -76,8 +77,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/devices/count")
-    public Long countDevices(@PathVariable Integer id) {
-        return (long) userService.getById(id).getDevices().size();
+    public RestResponse<Long> countDevices(@PathVariable Integer id) {
+        return new RestResponse<>((long) userService.getById(id).getDevices().size());
     }
 
 }

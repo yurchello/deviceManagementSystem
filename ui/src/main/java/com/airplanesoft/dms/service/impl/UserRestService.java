@@ -2,6 +2,7 @@ package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.UserDto;
+import com.airplanesoft.dms.http.RestResponse;
 import com.airplanesoft.dms.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +38,7 @@ public class UserRestService implements UserService {
     @Override
     public UserDto getById(Integer id) {
         logger.info("Get user id=" + id);
-        return restTemplate.exchange(USERS + DELIM + id, HttpMethod.GET, getJsonEntity(), UserDto.class).getBody();
+        return restTemplate.exchange(USER + DELIM + id, HttpMethod.GET, getJsonEntity(), new ParameterizedTypeReference<RestResponse<UserDto>>(){}).getBody().getPayload();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class UserRestService implements UserService {
     @Override
     public long count() {
         logger.info("Get users count.");
-        return restTemplate.exchange(USERS + COUNT, HttpMethod.GET, getJsonEntity(), Long.class).getBody();
+        return restTemplate.exchange(USER + COUNT, HttpMethod.GET, getJsonEntity(),  new ParameterizedTypeReference<RestResponse<Long>>(){}).getBody().getPayload();
     }
 
     @Override
@@ -59,8 +60,8 @@ public class UserRestService implements UserService {
     @Override
     public List<UserDto> findAll(Pageable pageable) {
         logger.info("Find users: " + " pageSize=" + pageable.getPageSize() + " pageNumber=" + pageable.getPageNumber());
-        String uriString = buildUriString(USERS, pageable);
-        return makeGetRequest(uriString, new ParameterizedTypeReference<List<UserDto>>() {}).getBody();
+        String uriString = buildUriString(USER, pageable);
+        return makeGetRequest(uriString, new ParameterizedTypeReference<RestResponse<List<UserDto>>>() {}).getBody().getPayload();
     }
 
     @Override
@@ -71,19 +72,19 @@ public class UserRestService implements UserService {
     @Override
     public Set<DeviceDto> getDevicesByUserId(Integer userId, Pageable pageable) {
         logger.info("Find devices assigned to user userId=" + userId + " pageSize=" + pageable.getPageSize() + " pageNumber=" + pageable.getPageNumber());
-        String uriString = buildUriString( USERS + DELIM + userId + DEVICES, pageable);
-        return makeGetRequest(uriString, new ParameterizedTypeReference<Set<DeviceDto>>() {}).getBody();
+        String uriString = buildUriString( USER + DELIM + userId + DEVICES, pageable);
+        return makeGetRequest(uriString, new ParameterizedTypeReference<RestResponse<Set<DeviceDto>>>() {}).getBody().getPayload();
     }
 
     public void saveDevice(UserDto userDto, DeviceDto deviceDto){
         logger.info("Save device assigned to user user: " + userDto + " device: " + deviceDto );
-        restTemplate.put( USERS + DELIM + userDto.getId() +  DEVICES + DELIM, deviceDto, Void.class);
+        restTemplate.put( USER + DELIM + userDto.getId() + DEVICES + DELIM, deviceDto, Void.class);
     }
 
     @Override
     public long countDevices(Integer userId) {
         logger.info("Count devices by  user id=" + userId);
-        return restTemplate.exchange(USERS + DELIM + userId + DEVICES + COUNT, HttpMethod.GET, getJsonEntity(), Long.class).getBody();
+        return restTemplate.exchange(USER + DELIM + userId + DEVICES + COUNT, HttpMethod.GET, getJsonEntity(),  new ParameterizedTypeReference<RestResponse<Long>>(){}).getBody().getPayload();
     }
 
 
