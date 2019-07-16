@@ -66,14 +66,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}/devices")
-    public HttpStatus saveDevice(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
+    public void saveDevice(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
         Device device = FromDTO.fromDeviceDTO(deviceDto);
         device.setCreated(ZonedDateTime.now());
         device.setModified(ZonedDateTime.now());
         DevicePlatform devicePlatform = devicePlatformService.findByName(deviceDto.getDevicePlatform()).orElseThrow(RuntimeException::new);
         device.setDevicePlatform(devicePlatform);
         userService.addDevice(id, device);
-        return HttpStatus.CREATED;
     }
 
     @GetMapping("/{id}/devices/count")
