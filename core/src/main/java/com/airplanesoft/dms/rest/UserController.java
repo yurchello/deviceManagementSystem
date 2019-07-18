@@ -4,6 +4,7 @@ import com.airplanesoft.dms.dto.DeviceDto;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.entity.Device;
 import com.airplanesoft.dms.entity.DevicePlatform;
+import com.airplanesoft.dms.entity.JobPosition;
 import com.airplanesoft.dms.entity.User;
 import com.airplanesoft.dms.http.RestResponse;
 import com.airplanesoft.dms.service.DevicePlatformService;
@@ -26,6 +27,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -58,13 +61,8 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}")
-    public RestResponse<UserDto> getUser(@PathVariable Integer id) {
-        User user = userService.getById(id);
-        if (user != null) {
-            return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
-        }else {
-            return new RestResponse<>(Collections.singletonList("User not found. id=" + id), 404);
-        }
+    public RestResponse<UserDto> getUser(@PathVariable Integer id, HttpServletResponse response) {
+        return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
     }
 
     @GetMapping(path = "/{id}/devices")
@@ -81,6 +79,17 @@ public class UserController {
         device.setDevicePlatform(devicePlatform);
         userService.addDevice(id, device);
     }
+
+    @PostMapping("/")
+    public void saveUser(@RequestBody UserDto userDto) {
+        userService.save(FromDTO.toUser(userDto));
+    }
+
+    @PutMapping("/{id}/job-position")
+    public void updateUserJobPosition(@PathVariable Integer id, @RequestBody List<String> jobPositions) {
+        userService.updateJobPositions(id, jobPositions);
+    }
+
 
     @GetMapping("/{id}/devices/count")
     public RestResponse<Long> countDevices(@PathVariable Integer id) {

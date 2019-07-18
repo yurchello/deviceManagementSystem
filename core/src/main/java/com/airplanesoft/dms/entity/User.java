@@ -9,6 +9,17 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends AbstractEntity <Integer>{
 
+    public User(String firstName, String lastName, String email, Set<JobPosition> jobPositions, Set<Device> devices) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.jobPositions = jobPositions;
+        this.devices = devices;
+    }
+
+    public User() {
+    }
+
     @Column(nullable = false)
     private String firstName;
 

@@ -9,6 +9,13 @@ import java.util.Objects;
 @Table(name = "job_positions")
 public class JobPosition extends AbstractEntity <Integer>{
 
+    public JobPosition(String name) {
+        this.name = name;
+    }
+
+    public JobPosition() {
+    }
+
     @Column(nullable = false, unique = true)
     private String name;
 

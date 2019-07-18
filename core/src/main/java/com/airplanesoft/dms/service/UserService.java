@@ -21,4 +21,6 @@ public interface UserService {
     Set<Device> getDevicesByUserId(Integer userId);
 
     User addDevice(Integer userId, Device device);
+
+    void updateJobPositions(Integer id, List<String> jobPositions);
 }

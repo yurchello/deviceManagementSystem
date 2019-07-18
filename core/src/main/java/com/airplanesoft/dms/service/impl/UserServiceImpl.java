@@ -1,8 +1,10 @@
 package com.airplanesoft.dms.service.impl;
 
 import com.airplanesoft.dms.entity.Device;
+import com.airplanesoft.dms.entity.JobPosition;
 import com.airplanesoft.dms.entity.User;
 import com.airplanesoft.dms.repository.DeviceRepository;
+import com.airplanesoft.dms.repository.JobPositionRepository;
 import com.airplanesoft.dms.repository.UserRepository;
 import com.airplanesoft.dms.service.UserService;
 import org.apache.commons.logging.Log;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -26,6 +29,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     @Autowired
     DeviceRepository deviceRepository;
+    @Autowired
+    JobPositionRepository jobPositionRepository;
 
     @Override
     public List<User> findAll() {
@@ -49,14 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer id) {
-        User user = null;
-        try {
-            user = userRepository.getOne(id);
-        }catch (Exception e){
-
-        }
-
-        return user;
+        return userRepository.getOne(id);
     }
 
     @Override
@@ -75,4 +73,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void updateJobPositions(Integer id, List<String> jobPositions) {
+        Set<JobPosition> positions = jobPositionRepository.findByNameIn(jobPositions);
+        User user = userRepository.getOne(id);
+        user.setJobPositions(positions);
+        userRepository.save(user);
+    }
 }
