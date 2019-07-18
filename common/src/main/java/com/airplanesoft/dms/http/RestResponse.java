@@ -8,7 +8,7 @@ public class RestResponse<T> {
     private boolean success = true;
     private List<String> messages;
     private LocalDateTime timestamp = LocalDateTime.now();
-    private int status;
+    private int status = 200;
 
     public RestResponse() {
     }
