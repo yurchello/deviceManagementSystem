@@ -11,8 +11,10 @@ import com.airplanesoft.dms.service.JobPositionService;
 import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.util.FromDTO;
 import com.airplanesoft.dms.util.ToDTO;
+import java.util.Collections;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -57,7 +59,12 @@ public class UserController {
 
     @GetMapping(path = "/{id}")
     public RestResponse<UserDto> getUser(@PathVariable Integer id) {
-        return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
+        User user = userService.getById(id);
+        if (user != null) {
+            return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
+        }else {
+            return new RestResponse<>(Collections.singletonList("User not found. id=" + id), 404);
+        }
     }
 
     @GetMapping(path = "/{id}/devices")

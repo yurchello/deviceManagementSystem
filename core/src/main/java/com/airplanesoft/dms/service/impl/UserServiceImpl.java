@@ -49,7 +49,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer id) {
-        return userRepository.getOne(id);
+        User user = null;
+        try {
+            user = userRepository.getOne(id);
+        }catch (Exception e){
+
+        }
+
+        return user;
     }
 
     @Override

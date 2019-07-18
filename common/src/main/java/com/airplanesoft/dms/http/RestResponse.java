@@ -8,8 +8,23 @@ public class RestResponse<T> {
     private boolean success = true;
     private List<String> messages;
     private LocalDateTime timestamp = LocalDateTime.now();
+    private int status;
 
     public RestResponse() {
+    }
+
+    public RestResponse(T payload, int status) {
+        this.payload = payload;
+        this.status = status;
+    }
+
+    public RestResponse(List<String> messages, int status) {
+        this.messages = messages;
+        this.status = status;
+    }
+
+    public RestResponse(int status) {
+        this.status = status;
     }
 
     public RestResponse(T payload) {
@@ -53,5 +68,13 @@ public class RestResponse<T> {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
