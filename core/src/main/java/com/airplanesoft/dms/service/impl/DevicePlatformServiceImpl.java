@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,5 +26,11 @@ public class DevicePlatformServiceImpl implements DevicePlatformService {
     @Override
     public Optional<DevicePlatform> findByName(String name) {
         return devicePlatformRepository.findByName(name);
+    }
+
+    @Override
+    public DevicePlatform create(DevicePlatform devicePlatform) {
+        devicePlatform.setCreated(ZonedDateTime.now());
+        return devicePlatformRepository.save(devicePlatform);
     }
 }

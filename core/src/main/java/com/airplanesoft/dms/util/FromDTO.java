@@ -1,6 +1,7 @@
 package com.airplanesoft.dms.util;
 
 import com.airplanesoft.dms.dto.DeviceDto;
+import com.airplanesoft.dms.dto.DevicePlatformDTO;
 import com.airplanesoft.dms.dto.DeviceState;
 import com.airplanesoft.dms.dto.UserDto;
 import com.airplanesoft.dms.entity.Device;
@@ -18,9 +19,14 @@ public class FromDTO {
 
     public static User toUser(UserDto userDto) {
         User user = new User();
+        user.setId(userDto.getId());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         return user;
+    }
+
+    public static DevicePlatform fromDevicePlatformDTO(DevicePlatformDTO devicePlatformDTO) {
+        return new DevicePlatform(devicePlatformDTO.getName());
     }
 }

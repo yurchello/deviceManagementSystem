@@ -12,7 +12,7 @@ public interface UserService {
 
     Page<User> findAll(Pageable pageable);
 
-    void save(User person);
+    User save(User person);
 
     long count();
 
@@ -22,5 +22,5 @@ public interface UserService {
 
     User addDevice(Integer userId, Device device);
 
-    void updateJobPositions(Integer id, List<String> jobPositions);
+    User updateJobPositions(Integer id, List<String> jobPositions);
 }

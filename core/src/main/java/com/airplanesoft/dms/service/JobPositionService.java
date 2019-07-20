@@ -8,4 +8,6 @@ import java.util.Set;
 
 public interface JobPositionService {
     List<JobPosition> findAll();
+
+    JobPosition getByName(String name);
 }

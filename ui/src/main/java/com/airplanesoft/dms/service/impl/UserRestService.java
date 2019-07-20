@@ -78,7 +78,7 @@ public class UserRestService implements UserService {
 
     public void saveDevice(UserDto userDto, DeviceDto deviceDto){
         logger.info("Save device assigned to user user: " + userDto + " device: " + deviceDto );
-        restTemplate.put( USER + DELIM + userDto.getId() + DEVICES + DELIM, deviceDto, Void.class);
+        restTemplate.put( USER + DELIM + userDto.getId() + DEVICE + DELIM, deviceDto, Void.class);
     }
 
     @Override

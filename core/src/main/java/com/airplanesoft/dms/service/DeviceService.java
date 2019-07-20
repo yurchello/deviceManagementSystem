@@ -9,5 +9,5 @@ public interface DeviceService {
     List<Device> findAll();
     Device save(Device device);
     Device getById(Integer id);
-    void updateDeviceState(Integer deviceId, String deviceState);
+    Device updateDeviceState(Integer deviceId, String deviceState);
 }

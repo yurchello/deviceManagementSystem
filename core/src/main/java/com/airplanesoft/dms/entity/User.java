@@ -31,7 +31,7 @@ public class User extends AbstractEntity <Integer>{
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_job_positions",
-            joinColumns = @JoinColumn(name = "user_id", nullable = false, updatable = false),
+            joinColumns = @JoinColumn(name = "user_id", nullable = true, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "job_position_id", nullable = false, updatable = false))
     private Set<JobPosition> jobPositions;
 

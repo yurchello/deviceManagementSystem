@@ -24,7 +24,8 @@ public class DeviceController {
     }
 
     @PutMapping("{id}/state/{name}")
-    public void changeDeviceState(@PathVariable Integer id, @PathVariable String name) {
-        deviceService.updateDeviceState(id, name);
+    public DeviceDto changeDeviceState(@PathVariable Integer id, @PathVariable String name) {
+       return ToDTO.fromDevice(deviceService.updateDeviceState(id, name));
     }
+
 }

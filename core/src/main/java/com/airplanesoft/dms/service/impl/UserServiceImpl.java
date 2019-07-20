@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,8 +44,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        user.setCreated(ZonedDateTime.now());
+        return userRepository.save(user);
     }
 
     @Override
@@ -74,10 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateJobPositions(Integer id, List<String> jobPositions) {
+    public User updateJobPositions(Integer id, List<String> jobPositions) {
         Set<JobPosition> positions = jobPositionRepository.findByNameIn(jobPositions);
         User user = userRepository.getOne(id);
         user.setJobPositions(positions);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface DevicePlatformService {
     List<DevicePlatform> findAll();
     Optional<DevicePlatform> findByName(String name);
+    DevicePlatform create(DevicePlatform devicePlatform);
 }

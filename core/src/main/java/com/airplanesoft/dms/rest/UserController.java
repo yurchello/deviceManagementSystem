@@ -70,8 +70,8 @@ public class UserController {
         return new RestResponse<>(userService.getById(id).getDevices().stream().map(ToDTO::fromDevice).collect(Collectors.toSet()));
     }
 
-    @PutMapping("/{id}/devices")
-    public void saveDevice(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
+    @PutMapping("/{id}/device")
+    public void addDeviceToUser(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
         Device device = FromDTO.fromDeviceDTO(deviceDto);
         device.setCreated(ZonedDateTime.now());
         device.setModified(ZonedDateTime.now());
@@ -80,16 +80,16 @@ public class UserController {
         userService.addDevice(id, device);
     }
 
-    @PostMapping("/")
-    public void saveUser(@RequestBody UserDto userDto) {
-        userService.save(FromDTO.toUser(userDto));
+    @PostMapping("")
+    public RestResponse<UserDto> saveUser(@RequestBody UserDto userDto) {
+        User rr = userService.save(FromDTO.toUser(userDto));
+        return new RestResponse<>(ToDTO.fromUser(rr));
     }
 
     @PutMapping("/{id}/job-position")
-    public void updateUserJobPosition(@PathVariable Integer id, @RequestBody List<String> jobPositions) {
-        userService.updateJobPositions(id, jobPositions);
+    public RestResponse<UserDto> updateUserJobPosition(@PathVariable Integer id, @RequestBody List<String> jobPositions) {
+        return new RestResponse<>(ToDTO.fromUser(userService.updateJobPositions(id, jobPositions)));
     }
-
 
     @GetMapping("/{id}/devices/count")
     public RestResponse<Long> countDevices(@PathVariable Integer id) {

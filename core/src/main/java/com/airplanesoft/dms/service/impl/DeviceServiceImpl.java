@@ -33,9 +33,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void updateDeviceState(Integer deviceId, String deviceState) {
-        if (deviceRepository.existsById(deviceId)){
-            deviceRepository.updateDeviceState(deviceId, DeviceState.valueOf(deviceState));
-        }
+    public Device updateDeviceState(Integer deviceId, String deviceState) {
+        deviceRepository.updateDeviceState(deviceId, DeviceState.valueOf(deviceState));
+        return deviceRepository.getOne(deviceId);
     }
 }
