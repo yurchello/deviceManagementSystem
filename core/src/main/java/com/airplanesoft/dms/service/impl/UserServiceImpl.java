@@ -82,4 +82,10 @@ public class UserServiceImpl implements UserService {
         user.setJobPositions(positions);
         return userRepository.save(user);
     }
+
+    @Override
+    public Integer delete(Integer id) {
+        userRepository.deleteById(id);
+        return id;
+    }
 }

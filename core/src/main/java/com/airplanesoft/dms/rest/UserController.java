@@ -96,4 +96,9 @@ public class UserController {
         return new RestResponse<>((long) userService.getById(id).getDevices().size());
     }
 
+    @DeleteMapping("")
+    public RestResponse<Integer> deleteUser(@PathVariable Integer id) {
+        return new RestResponse<>(userService.delete(id));
+    }
+
 }
