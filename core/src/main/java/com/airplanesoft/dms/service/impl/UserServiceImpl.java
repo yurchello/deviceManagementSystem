@@ -76,6 +76,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User removeDevice(Integer userId, Integer deviceId) {
+        logger.info("Removing device: " + deviceId + "from User: id=" + userId);
+        deviceRepository.deleteById(deviceId);
+        User user = userRepository.getOne(userId);
+        user.getDevices().removeIf(p->p.getId().equals(deviceId));
+        return userRepository.save(user);
+    }
+
+    @Override
     public User updateJobPositions(Integer id, List<String> jobPositions) {
         Set<JobPosition> positions = jobPositionRepository.findByNameIn(jobPositions);
         User user = userRepository.getOne(id);

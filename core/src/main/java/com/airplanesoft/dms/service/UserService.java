@@ -22,6 +22,8 @@ public interface UserService {
 
     User addDevice(Integer userId, Device device);
 
+    User removeDevice(Integer userId,Integer deviceId);
+
     User updateJobPositions(Integer id, List<String> jobPositions);
 
     Integer delete(Integer id);

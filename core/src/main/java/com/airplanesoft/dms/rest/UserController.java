@@ -71,13 +71,19 @@ public class UserController {
     }
 
     @PutMapping("/{id}/device")
-    public void addDeviceToUser(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
+    public RestResponse<UserDto> addDeviceToUser(@PathVariable Integer id, @RequestBody DeviceDto deviceDto) {
         Device device = FromDTO.fromDeviceDTO(deviceDto);
         device.setCreated(ZonedDateTime.now());
         device.setModified(ZonedDateTime.now());
         DevicePlatform devicePlatform = devicePlatformService.findByName(deviceDto.getDevicePlatform()).orElseThrow(RuntimeException::new);
         device.setDevicePlatform(devicePlatform);
         userService.addDevice(id, device);
+        return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
+    }
+
+    @DeleteMapping("/{id}/device")
+    public RestResponse<UserDto> deleteDeviceFromUser(@PathVariable Integer userId, @PathVariable Integer deviceId) {
+        return new RestResponse<>(ToDTO.fromUser(userService.removeDevice(userId, deviceId)));
     }
 
     @PostMapping("")
