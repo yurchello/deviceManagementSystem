@@ -81,7 +81,7 @@ public class UserController {
         return new RestResponse<>(ToDTO.fromUser(userService.getById(id)));
     }
 
-    @DeleteMapping("/{id}/device")
+    @DeleteMapping("/{userId}/device/{deviceId}")
     public RestResponse<UserDto> deleteDeviceFromUser(@PathVariable Integer userId, @PathVariable Integer deviceId) {
         return new RestResponse<>(ToDTO.fromUser(userService.removeDevice(userId, deviceId)));
     }
@@ -102,7 +102,7 @@ public class UserController {
         return new RestResponse<>((long) userService.getById(id).getDevices().size());
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     public RestResponse<Integer> deleteUser(@PathVariable Integer id) {
         return new RestResponse<>(userService.delete(id));
     }
