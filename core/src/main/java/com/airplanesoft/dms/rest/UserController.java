@@ -13,6 +13,10 @@ import com.airplanesoft.dms.service.UserService;
 import com.airplanesoft.dms.util.FromDTO;
 import com.airplanesoft.dms.util.ToDTO;
 import java.util.Collections;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.mapping.Collection;
@@ -47,7 +51,12 @@ public class UserController {
     DevicePlatformService devicePlatformService;
 
     @GetMapping(path = "")
-    public RestResponse<List<UserDto>> getAll(UserDto userDto, Pageable pageable) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "int", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(name = "size", dataType = "int", paramType = "query", value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query", value = "Sorting criteria in the format: property(,asc|desc). "
+                    + "Default sort order is ascending. " + "Multiple sort criteria are supported.") })
+    public RestResponse<List<UserDto>> getAll(Pageable pageable) {
         logger.info("Get users by pages: page size=" + pageable.getPageSize() + " page number=" + pageable.getPageNumber());
         Page<User> page = userService.findAll(pageable);
         return new RestResponse<>(page.getContent().stream()
